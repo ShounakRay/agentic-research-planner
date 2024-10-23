@@ -11,11 +11,11 @@ class ResearchAccumulator:
     
     def accumulate(self, **kwargs) -> List[Context]:
         # Accumulate the research
-        pass
+        return []
     
     def __extract_text(self, pdf_path: str) -> str:
         # Extract the text from the PDF
-        pass
+        return ""
     
     ###########################
     ########### CORE ##########

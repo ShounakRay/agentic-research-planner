@@ -1,12 +1,13 @@
 from typing import List
 from Schemas.Gaps import Hypothesis
-
+from startup import critic
 
 class Designer:
     def __init__(self, hypotheses: List[Hypothesis], **kwargs):
         self.hypotheses = hypotheses
         self.designer = None
     
+    @critic.overwatch
     def design_experiments(self, hypotheses: List[Hypothesis], **kwargs):
         def _design(hypothesis: Hypothesis) -> str:
             # Design the experiments

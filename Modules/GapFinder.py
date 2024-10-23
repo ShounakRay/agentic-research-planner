@@ -32,6 +32,7 @@ class GapFinder:
     ########## CORE ###########
     ###########################
     
+    @critic.overwatch
     def find_gaps(self, contexts: List[Context], flows: List[ExperimentalDesign], **kwargs) -> List[Gap]:
         """Given context from the accumulated research, this gets the gaps.
 
@@ -47,6 +48,7 @@ class GapFinder:
             pass
         return [_find(context, flow) for context, flow in zip(contexts, flows)]
     
+    @critic.overwatch
     def get_hypotheses(self, Gaps: List[Gap]) -> List[Hypothesis]:
         """Given the gaps, it returns the hypotheses (a simple transformation).
 
@@ -79,7 +81,7 @@ class GapFinder:
     ###########################
     
     # FIXME: Make sure this function header actually works with this usage
-    @critic.overwatch(caller="top_k_papers")
+    @critic.overwatch
     def _get_top_k_papers(self, query: str, top_k: int, **kwargs) -> List[Context]:
         """This gets the top k papers from the accumulated research. Searches
         over the vector store for the most relevant papers.
@@ -98,7 +100,7 @@ class GapFinder:
         """
         
         # Get the top k papers
-        pass
+        return [""]
     
     def _adds_papers_to_store(self, papers: List[Context], **kwargs) -> Type[None]:
         """Adds the papers to the vector store.
