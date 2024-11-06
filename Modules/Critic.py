@@ -39,8 +39,8 @@ class Critic:
                 f"Provide a critique and suggestions for improvement."
             )
 
+            # FIXME
             # Call the LLM with the prompt to get the critique
-            # latest_critique = llm_query(prompt)
             # latest_critique = prompt_LLM(self.client, self.model_id, prompt,
             #                              desired_format=None, max_tokens=2048,
             #                              force_raw=True, validate_func=None, num_retry=2)
