@@ -7,9 +7,9 @@ from Modules.Critic import Critic
 
 # Initialize the critic only
 prompt_mapping = {
+    "_get_top_k_papers": "Prompts/raccum_prompt.txt",
     "find_gaps": "Prompts/gapfinder_prompt1.txt",
-    "_get_top_k_papers": "Prompts/gapfinder_prompt2.txt",
-    "get_hypotheses": "Prompts/gapfinder_prompt3.txt",
+    "get_hypotheses": "Prompts/gapfinder_prompt2.txt",
     "design_experiments": "Prompts/designer_prompt1.txt"
 }
 critic = Critic(prompt_mapping=prompt_mapping)
@@ -20,8 +20,6 @@ critic = Critic(prompt_mapping=prompt_mapping)
 # import startup
 
 def run(n_loops=5):
-    
-    # _, research_accumulator, gap_finder, designer, critic = startup.init()
     from Modules.Designer import Designer
     from Modules.GapFinder import GapFinder
     from Modules.ResearchAccumulator import ResearchAccumulator
