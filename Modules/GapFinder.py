@@ -1,8 +1,7 @@
 from typing import List, Type
-from Modules import Critic
 from Schemas.Accumulation import Context
 from Schemas.Gaps import ExperimentalDesign, Hypothesis, Gap
-from startup import critic
+from core import critic
 
 # TODO: What's our vector store interface?
 
@@ -60,6 +59,7 @@ class GapFinder:
         """
         def _get(gaps: Type[Gaps]) -> Hypothesis: # type: ignore
             # Get the hypotheses
+            # TODO: Hook up to a prompt for the critic
             pass
         
         return [_get(gap) for gap in Gaps]
