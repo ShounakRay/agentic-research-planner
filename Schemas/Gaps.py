@@ -15,11 +15,13 @@ class PaperKnowledge(BaseModel):
     paper_experimental_design: ExperimentalDesign
 
 class Gap(BaseModel):
+    """Data model for a research gap."""
     gap_id: int
     gap_name: str
     gap_description: str
 
 class Hypothesis(BaseModel):
+    """Data model for a research hypothesis."""
     hypothesis_id: int
     hypothesis_name: str
     hypothesis_description: str
