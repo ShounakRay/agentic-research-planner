@@ -4,13 +4,14 @@ from llama_index.llms.openai import OpenAI
 from llama_index.core.prompts import PromptTemplate
 
 from Schemas.Gaps import Hypothesis
-
+from core import critic
 
 class Designer:
     def __init__(self, hypotheses: List[Hypothesis], **kwargs):
         self.hypotheses = hypotheses
         self.designer = OpenAI(model="gpt-4o-mini")
     
+    @critic.overwatch
     def design_experiments(self, hypotheses: List[Hypothesis], **kwargs):
         prompt_tmpl = PromptTemplate(
             """
@@ -48,6 +49,7 @@ class Designer:
 
         return [_design(hypothesis) for hypothesis in hypotheses]
     
+
     def core(self) -> List[str]:
         return self.design_experiments(self.hypotheses)
     

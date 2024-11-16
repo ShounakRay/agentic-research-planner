@@ -14,7 +14,7 @@ from llama_index.core.prompts import PromptTemplate
 # from Modules import Critic
 from Schemas.Accumulation import Context
 from Schemas.Gaps import ExperimentalDesign, Hypothesis, Gap
-# from startup import critic
+from startup import critic
 
 # TODO: What's our vector store interface?
 
@@ -93,6 +93,7 @@ class GapFinder:
     ########## CORE ###########
     ###########################
     
+    @critic.overwatch
     def find_gaps(self, **kwargs) -> List[Gap]:
         """Given context from the accumulated research, this gets the gaps.
 
@@ -121,6 +122,7 @@ class GapFinder:
 
         return response_to_gaps(response)
     
+    @critic.overwatch
     def get_hypotheses(self, gaps: List[Gap]) -> List[Hypothesis]:
         """Given the gaps, it returns the hypotheses (a simple transformation).
 
@@ -180,8 +182,7 @@ class GapFinder:
     ######### HELPERS #########
     ###########################
     
-    # FIXME: Make sure this function header actually works with this usage
-    # @critic.overwatch(caller="top_k_papers")
+    @critic.overwatch
     def _get_top_k_papers(self, query: str, top_k: int, **kwargs) -> List[Context]:
         """This gets the top k papers from the accumulated research. Searches
         over the vector store for the most relevant papers.
@@ -200,7 +201,7 @@ class GapFinder:
         """
         
         # Get the top k papers
-        pass
+        return [""]
     
     def _adds_papers_to_store(self, papers: List[Context], **kwargs) -> Type[None]:
         """Adds the papers to the vector store.
