@@ -1,8 +1,7 @@
 from typing import List, Type
-from Modules import Critic
 from Schemas.Accumulation import Context
 from Schemas.Gaps import ExperimentalDesign, Hypothesis, Gap
-from startup import critic
+from core import critic
 
 # TODO: What's our vector store interface?
 
@@ -32,6 +31,7 @@ class GapFinder:
     ########## CORE ###########
     ###########################
     
+    @critic.overwatch
     def find_gaps(self, contexts: List[Context], flows: List[ExperimentalDesign], **kwargs) -> List[Gap]:
         """Given context from the accumulated research, this gets the gaps.
 
@@ -47,6 +47,7 @@ class GapFinder:
             pass
         return [_find(context, flow) for context, flow in zip(contexts, flows)]
     
+    @critic.overwatch
     def get_hypotheses(self, Gaps: List[Gap]) -> List[Hypothesis]:
         """Given the gaps, it returns the hypotheses (a simple transformation).
 
@@ -58,6 +59,7 @@ class GapFinder:
         """
         def _get(gaps: Type[Gaps]) -> Hypothesis: # type: ignore
             # Get the hypotheses
+            # TODO: Hook up to a prompt for the critic
             pass
         
         return [_get(gap) for gap in Gaps]
@@ -79,7 +81,7 @@ class GapFinder:
     ###########################
     
     # FIXME: Make sure this function header actually works with this usage
-    @critic.overwatch(caller="top_k_papers")
+    @critic.overwatch
     def _get_top_k_papers(self, query: str, top_k: int, **kwargs) -> List[Context]:
         """This gets the top k papers from the accumulated research. Searches
         over the vector store for the most relevant papers.
@@ -98,7 +100,7 @@ class GapFinder:
         """
         
         # Get the top k papers
-        pass
+        return [""]
     
     def _adds_papers_to_store(self, papers: List[Context], **kwargs) -> Type[None]:
         """Adds the papers to the vector store.

@@ -1,17 +1,19 @@
 from typing import List
 from Schemas.Gaps import Hypothesis
-
+from core import critic
 
 class Designer:
-    def __init__(self, hypotheses: List[Hypothesis], **kwargs):
-        self.hypotheses = hypotheses
+    def __init__(self, **kwargs):
+        self.hypotheses = None
         self.designer = None
     
-    def design_experiments(self, hypotheses: List[Hypothesis], **kwargs):
+    @critic.overwatch
+    def design_experiments(self, hypotheses: List[Hypothesis], **kwargs):        
         def _design(hypothesis: Hypothesis) -> str:
             # Design the experiments
             pass
         return [_design(hypothesis) for hypothesis in hypotheses]
     
-    def core(self) -> List[str]:
+    def core(self, hypotheses: List[Hypothesis]) -> List[str]:
+        self.hypotheses = hypotheses
         return self.design_experiments(self.hypotheses)
