@@ -14,7 +14,7 @@ from llama_index.core.prompts import PromptTemplate
 # from Modules import Critic
 from Schemas.Accumulation import Context
 from Schemas.Gaps import ExperimentalDesign, Hypothesis, Gap
-from startup import critic
+from core import critic
 
 # TODO: What's our vector store interface?
 
