@@ -26,6 +26,7 @@ class Designer:
             List[str]: These are the list of designed experiments for each hypothesis.
         """        
         
+        # TODO: ABSTRACT THIS AWAY
         prompt_tmpl = PromptTemplate(
             """
             Given the following hypothesis:
@@ -68,6 +69,14 @@ class Designer:
     
 
 if __name__ == '__main__':
+    """
+    NOTE:
+    > Ensure you `export DEV_OPENAI_MODEL_ID="gpt-4o"`
+    > Ensure you `export OPENAI_API_KEY="sk-..."`
+    > Ensure you have proper packages installed from conda/pip
+    """
+    
+    
     from Modules.ResearchAccumulator import ResearchAccumulator
     from Modules.GapFinder import GapFinder
 
@@ -86,4 +95,4 @@ if __name__ == '__main__':
 
     for d in designs:
         print(d)
-        print()
+        print() 

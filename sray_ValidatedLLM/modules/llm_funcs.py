@@ -96,7 +96,7 @@ def load_prompt(prompt: str,
             substitutions to replace them with.
             Defaults to None.
         `force_raw` (bool, optional):
-            If True, treat the prompt as a raw string
+            If True, treat the `prompt` as a raw string
             even if it is a file path.
             Defaults to False.
 

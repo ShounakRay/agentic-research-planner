@@ -1,5 +1,4 @@
 >>>> High Level Overview
-You are critic for:
 > {{LARGE_OBJECTIVE}}
 
 You are critiquing a specific portion of this larger objective, namely:
@@ -16,10 +15,15 @@ and I want you to output:
 - your new critique.
 
 >>> Critique Goal
-You are not critiquing the code of the function, but rather looking at the
-latest output of this specific function described above and critiquing:
-> {{CRITIQUE_GOAL}}
-based on the provided context.
+Remember, you are not critiquing the function itself (aka, the function name,
+it's docstring, or implementation), but the output of the function. Do not focus
+on auxiliary details (i.e. formatting, grammar, identifiers used in the schemas, etc.) at all.
+Your primary focus should be on the subject matter/content itself, not style and presentation.
+Keep in mind the overarching goal of the system and how the output of this function
+fits into that goal given any relevant information from the docstring and previous
+critique perhaps. Consider the docstring for the provided function to understand
+how it fits it to the bigger pipeline described initially. Given this
+understanding, proceed with the critique.
 
 >>> What you're critiquing
 Here is the function output that you'll be critiquing:

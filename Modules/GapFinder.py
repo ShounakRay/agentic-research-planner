@@ -104,6 +104,7 @@ class GapFinder:
             List[Gap]: The gaps that were found organized in a list.
         """
         
+        # TODO: ABSTRACT THIS AWAY
         gap_finder_prompt = """
         Please identify potential research gaps, opportunities, or areas for further investigation based on the given papers. Please include citations for each claimed gap. Be as specific as possible.
         """
@@ -130,6 +131,7 @@ class GapFinder:
             List[Hypothesis]: This is a list of hypotheses that were generated based on the gaps.
         """
         
+        # TODO: ABSTRACT THIS AWAY
         prompt_tmpl = PromptTemplate(
             """
             Can you please help me generate a research hypothesis based on the following research gap that we've identified?

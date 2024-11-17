@@ -1,22 +1,17 @@
 from functools import wraps
 from pprint import pprint
+import sys
 from typing import Callable, Type
-from sray_ValidatedLLM.modules.llm_funcs import prompt_LLM
+from sray_ValidatedLLM.modules.llm_funcs import load_prompt, prompt_LLM
 from sray_ValidatedLLM.modules.utilities import configure_openai
 
 class Critic:
     Critique = str
     _critiques = {}  # Global dictionary to store critiques
 
-    META_CRITIC_PROMPT = """
+    LARGE_OBJECTIVE = """
         You are a helpful agent who's objective is to provide constructive feedback on the output of various functions.
         Each of these functions serves a unique purpose for a greater system that extracts information from existing research topics, finds gaps in the research, and designs experiments to fill those gaps.
-        Your job is to provide a critique on a function's output by giving suggestions for improvement.
-        You are provided with the name of the function and it's docstring for some context. You are also provided with the previous critique for this function for reference.
-        Lastly, you are provided with the latest output of this function which is what you are critiquing. The critique should be at most 1024 characters, clear, unambiguous, and concise.
-        Remember, you are not critiquing the function itself (aka, the function name, it's docstring, or implementation), but the output of the function.
-        
-        Keep in mind the overarching goal of the system and how the output of this function fits into that goal given any relevant information from the docstring and previous critique perhaps.
         """
 
     def __init__(self, prompt_mapping: dict[str, str], **kwargs):
@@ -52,19 +47,24 @@ class Critic:
                 f"Latest Output:\n{output}\n"
             )
 
+            META_CRITIC_PROMPT = load_prompt(prompt="Prompts/metacritic_prompt.txt",
+                                     substitutions={
+                                         'LARGE_OBJECTIVE': Critic.LARGE_OBJECTIVE,
+                                         'FUNC_NAME': func_name,
+                                         'FUNC_DOCSTRING': func_docstring,
+                                         "OUTPUT_TO_CRITIQUE": output,
+                                         "PREVIOUS_CRITIQUE": previous_critique
+                                     })
+
             # Call the LLM with the prompt to get the critique
             latest_critique = prompt_LLM(self.client, self.model_id, prompt,
                                          desired_format=None, max_tokens=512,
                                          force_raw=True, validate_func=None, num_retry=1,
-                                         system_prompt=Critic.META_CRITIC_PROMPT)
+                                         system_prompt=META_CRITIC_PROMPT)
             self._store_critique(func_name, latest_critique)
 
             # Output the critique for user feedback, but this could also be logged
-            print(f"Critique for {func_name}:\n{latest_critique}\n")
-
-            # pprint(prompt.strip())
-            # print("The output is:")
-            # pprint(output)
+            print(f"\033[93mCritique for {func_name}:\n{latest_critique}\033[0m\n")
             print("\n\n")
 
             return output
@@ -79,7 +79,8 @@ class Critic:
 
     def chastise(self) -> None:
         # Update the corresponding prompt for each function with the additional critique
-        # TODO:
+        # TODO: Need to abstract away the prompts and in-memory update the prompts according to the define prompt mapping.
+        # Perhaps store all the critiques and configuration in a separate file/folder.
         pass
     
     def _get_previous_critique(self, func_name: str) -> Critique:
