@@ -14,11 +14,6 @@ prompt_mapping = {
 }
 critic = Critic(prompt_mapping=prompt_mapping)
 
-
-# FIXME: By having this import line, we are initializing the global agents
-# from startup import research_accumulator, gap_finder, designer
-# import startup
-
 def run(n_loops=5):
     from Modules.Designer import Designer
     from Modules.GapFinder import GapFinder
@@ -27,8 +22,15 @@ def run(n_loops=5):
     # This runs the workflow of accumulating research, finding gaps,
     # getting designs, and incorporating critiques `n_loops` times
     
+    pdf_path = "./resources/validation/pdf"
+    ra = ResearchAccumulator()
+    ctxs = ra.accumulate(dir=pdf_path)
+
+    # Run the gap finder
+    
+    # FIXME: The constructors called here are incongruent with the actual constructors of each of these classes
     research_accumulator = ResearchAccumulator()
-    gap_finder = GapFinder(k=5)
+    gap_finder = GapFinder(init_contexts=ctxs, k=3, hypothesis_use_index=True)
     designer = Designer()
     
     def _step():
