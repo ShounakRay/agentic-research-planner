@@ -164,7 +164,8 @@ def prompt_LLM(client: Union[openai.lib.azure.AzureOpenAI, openai.OpenAI],
                max_tokens=DataConstants.MAX_TOKENS_INFERENCE,
                force_raw: bool = False,
                validate_func: object = None,
-               num_retry: int = DataConstants.DFT_LLM_RETRY_LIMIT) -> Union[str, dict]:
+               num_retry: int = DataConstants.DFT_LLM_RETRY_LIMIT,
+               system_prompt: str = None) -> Union[str, dict]:
     """
     
     `prompt_LLM` does basic validation of the response format depending on the
@@ -257,6 +258,12 @@ def prompt_LLM(client: Union[openai.lib.azure.AzureOpenAI, openai.OpenAI],
     PROMPT_CONTENT = _safe_prompt_format(prompt)
     RESPONSE_FORMAT = _safe_response_format(desired_format, prompt)
     
+    _SYSTEM_PROMPT = {
+        "role": "system",
+        "content": system_prompt
+    } if system_prompt else None
+    _SYSTEM_PROMPT = wrap_for_unpacking(_SYSTEM_PROMPT)
+    
     # TODO: Minor, make these LLM args parameters
     async def asynch_response(max_tokens, model_id):
         return await client.chat.completions.create(
@@ -270,7 +277,8 @@ def prompt_LLM(client: Union[openai.lib.azure.AzureOpenAI, openai.OpenAI],
                 {
                     "role": "user",
                     "content": [*PROMPT_CONTENT, *IMG_CONTENT],
-                }
+                },
+                *_SYSTEM_PROMPT
             ],
             **RESPONSE_FORMAT
         )
@@ -287,7 +295,8 @@ def prompt_LLM(client: Union[openai.lib.azure.AzureOpenAI, openai.OpenAI],
                 {
                     "role": "user",
                     "content": [*PROMPT_CONTENT, *IMG_CONTENT],
-                }
+                },
+                *_SYSTEM_PROMPT
             ],
             **RESPONSE_FORMAT
         )
