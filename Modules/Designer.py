@@ -13,7 +13,19 @@ class Designer:
         self.designer = OpenAI(model="gpt-4o-mini")
     
     @critic.overwatch
-    def design_experiments(self, hypotheses: List[Hypothesis], **kwargs):
+    def design_experiments(self, hypotheses: List[Hypothesis], **kwargs) -> List[str]:
+        """This function takes in a list of hypotheses and designs experiments for each hypothesis.
+        The output of this function will be used by researchers to design experiments. As a resulting,
+        each designed experiment should be as detailed, grounded, and actionable as possible. It's important
+        to make sure that the designed experiments are specific to the hypothesis and are not generic.
+
+        Args:
+            hypotheses (List[Hypothesis]): These are the hypotheses for which experiments need to be designed.
+
+        Returns:
+            List[str]: These are the list of designed experiments for each hypothesis.
+        """        
+        
         prompt_tmpl = PromptTemplate(
             """
             Given the following hypothesis:

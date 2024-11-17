@@ -95,20 +95,14 @@ class GapFinder:
     
     @critic.overwatch
     def find_gaps(self, **kwargs) -> List[Gap]:
-        """Given context from the accumulated research, this gets the gaps.
-
-        Args:
-            contexts (List[Context]): This is the output of `_get_top_k_papers`.
-            flows (List[ExperimentalDesign]): This is the output of `convert_papers_to_flowcharts`.
+        """Given a research body, this function finds the gaps in the research and structures them in a particular way.
+        Each gap identified is only meant to identify crucial flaws and/or missing componeents (gaps) in the research. Each
+        gap is NOT meant to offer solutions or suggestions inline. A separate function will be used to generate hypotheses
+        and experiments based on these gaps.
 
         Returns:
-            List[Gap]: _description_
+            List[Gap]: The gaps that were found organized in a list.
         """
-        # def _find(context: Type[Context], flow: Type[ExperimentalDesign]) -> Gap:
-        #     # Find the gaps
-        #     pass
-
-        # return [_find(context, flow) for context, flow in zip(contexts, flows)]
         
         gap_finder_prompt = """
         Please identify potential research gaps, opportunities, or areas for further investigation based on the given papers. Please include citations for each claimed gap. Be as specific as possible.
@@ -124,14 +118,18 @@ class GapFinder:
     
     @critic.overwatch
     def get_hypotheses(self, gaps: List[Gap]) -> List[Hypothesis]:
-        """Given the gaps, it returns the hypotheses (a simple transformation).
+        """This function generates hypotheses based on the gaps that were found.
+        It structures the hypotheses in a particular way. The output of this function
+        will be used by the next function to design experiments. As a result, each hypothesis should be
+        fairly specific and detailed and grounded well based on the research gaps identified.
 
         Args:
-            Gaps (List[Gap]): _description_
+            gaps (List[Gap]): These are the gaps that were found in the research by a previous function.
 
         Returns:
-            List[Hypothesis]: _description_
+            List[Hypothesis]: This is a list of hypotheses that were generated based on the gaps.
         """
+        
         prompt_tmpl = PromptTemplate(
             """
             Can you please help me generate a research hypothesis based on the following research gap that we've identified?
@@ -182,7 +180,6 @@ class GapFinder:
     ######### HELPERS #########
     ###########################
     
-    @critic.overwatch
     def _get_top_k_papers(self, query: str, top_k: int, **kwargs) -> List[Context]:
         """This gets the top k papers from the accumulated research. Searches
         over the vector store for the most relevant papers.
